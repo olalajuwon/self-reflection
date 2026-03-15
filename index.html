@@ -856,7 +856,7 @@
     <div id="formStudent">
       <label class="login-label">학번</label>
       <input type="number" class="login-input" id="studentIdInput"
-             placeholder="학번 입력 (예: 1)" min="1" max="25"
+             placeholder="학번 입력 (예: 241002)"
              onkeydown="if(event.key==='Enter') document.getElementById('studentPwInput').focus()" />
       <label class="login-label">비밀번호</label>
       <input type="password" class="login-input" id="studentPwInput"
@@ -1143,19 +1143,31 @@ function lockoutRemaining(id) {
 
 // ── STUDENTS ──────────────────────────────────────────────
 const STUDENTS = [
-  { id: 1,  name: '학생 1' },  { id: 2,  name: '학생 2' },
-  { id: 3,  name: '학생 3' },  { id: 4,  name: '학생 4' },
-  { id: 5,  name: '학생 5' },  { id: 6,  name: '학생 6' },
-  { id: 7,  name: '학생 7' },  { id: 8,  name: '학생 8' },
-  { id: 9,  name: '학생 9' },  { id: 10, name: '학생 10' },
-  { id: 11, name: '학생 11' }, { id: 12, name: '학생 12' },
-  { id: 13, name: '학생 13' }, { id: 14, name: '학생 14' },
-  { id: 15, name: '학생 15' }, { id: 16, name: '학생 16' },
-  { id: 17, name: '학생 17' }, { id: 18, name: '학생 18' },
-  { id: 19, name: '학생 19' }, { id: 20, name: '학생 20' },
-  { id: 21, name: '학생 21' }, { id: 22, name: '학생 22' },
-  { id: 23, name: '학생 23' }, { id: 24, name: '학생 24' },
-  { id: 25, name: '학생 25' },
+  { id: 21023,  name: '21023' },
+  { id: 231011, name: '231011' },
+  { id: 240208, name: '240208' },
+  { id: 241002, name: '241002' },
+  { id: 241003, name: '241003' },
+  { id: 241004, name: '241004' },
+  { id: 241005, name: '241005' },
+  { id: 241006, name: '241006' },
+  { id: 241007, name: '241007' },
+  { id: 241008, name: '241008' },
+  { id: 241009, name: '241009' },
+  { id: 241010, name: '241010' },
+  { id: 241011, name: '241011' },
+  { id: 241012, name: '241012' },
+  { id: 241013, name: '241013' },
+  { id: 241014, name: '241014' },
+  { id: 241015, name: '241015' },
+  { id: 241018, name: '241018' },
+  { id: 241019, name: '241019' },
+  { id: 241020, name: '241020' },
+  { id: 241021, name: '241021' },
+  { id: 241022, name: '241022' },
+  { id: 241023, name: '241023' },
+  { id: 241024, name: '241024' },
+  { id: 241025, name: '241025' },
 ];
 const WEEKS = Array.from({ length: 13 }, (_, i) => i + 2); // 2 ~ 14
 
@@ -1242,16 +1254,11 @@ async function handleStudentLogin() {
   const pw = pwInput.value;
 
   // 입력 검증
-  if (!idInput.value.trim() || isNaN(id) || id < 1 || id > 25) {
-    idInput.classList.add('error');
-    showStudentError('학번을 올바르게 입력해 주세요 (1~25).');
-    idInput.focus();
-    return;
-  }
   const student = STUDENTS.find(s => s.id === id);
-  if (!student) {
+  if (!idInput.value.trim() || isNaN(id) || !student) {
     idInput.classList.add('error');
     showStudentError('존재하지 않는 학번입니다.');
+    idInput.focus();
     return;
   }
   if (!pw) {
