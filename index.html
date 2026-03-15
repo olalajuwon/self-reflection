@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자기성찰지 | 생활지도와 상담</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --primary: #3B5BDB;
+      --primary-dark: #2F4AC0;
+      --primary-light: #EEF2FF;
+      --accent: #5C7CFA;
+      --success: #37B24D;
+      --success-light: #EBFBEE;
+      --warning: #F59F00;
+      --bg: #F8F9FA;
+      --card: #FFFFFF;
+      --border: #DEE2E6;
+      --text: #212529;
+      --text-secondary: #868E96;
+      --sidebar-bg: #1E2D6E;
+      --sidebar-text: #C5CCF5;
+      --sidebar-hover: #2A3F96;
+      --sidebar-active: #3B5BDB;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN SCREEN ── */
+    #loginScreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1E2D6E 0%, #3B5BDB 60%, #5C7CFA 100%);
+      padding: 24px;
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    .login-logo {
+      width: 68px;
+      height: 68px;
+      background: linear-gradient(135deg, #3B5BDB, #5C7CFA);
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 32px;
+    }
+    .login-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1E2D6E;
+      margin-bottom: 6px;
+    }
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+    }
+    .login-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #495057;
+      text-align: left;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .login-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      margin-bottom: 16px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23868E96' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .login-select:focus { outline: none; border-color: var(--primary); }
+    .login-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      margin-bottom: 24px;
+      transition: border-color 0.2s;
+    }
+    .login-input:focus { outline: none; border-color: var(--primary); }
+    .login-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #3B5BDB, #5C7CFA);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 15px rgba(59,91,219,0.35);
+    }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,91,219,0.45); }
+    .login-btn:active { transform: translateY(0); }
+    .login-info {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── MAIN APP ── */
+    #mainApp {
+      display: none;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #3B5BDB, #5C7CFA);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1E2D6E;
+    }
+    .header-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .student-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-light);
+      border: 1px solid #C5D0FA;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .student-avatar {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #3B5BDB, #5C7CFA);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.15s;
+      color: var(--text-secondary);
+    }
+    .icon-btn:hover { background: var(--bg); border-color: #ADB5BD; color: var(--text); }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      padding-top: 60px;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 220px;
+      background: var(--sidebar-bg);
+      min-height: calc(100vh - 60px);
+      position: fixed;
+      left: 0;
+      top: 60px;
+      bottom: 0;
+      overflow-y: auto;
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidebar-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #5C73C9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 8px 10px 4px;
+    }
+    .week-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      color: var(--sidebar-text);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+    .week-btn:hover { background: var(--sidebar-hover); }
+    .week-btn.active { background: var(--sidebar-active); color: #fff; font-weight: 600; }
+    .week-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3D4F8A;
+      flex-shrink: 0;
+    }
+    .week-dot.filled { background: var(--success); }
+    .week-dot.active { background: rgba(255,255,255,0.5); }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      margin-left: 220px;
+      padding: 32px 32px 60px;
+      max-width: calc(100% - 220px);
+    }
+
+    /* DASHBOARD */
+    #dashboard { display: block; }
+    .page-header {
+      margin-bottom: 28px;
+    }
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1E2D6E;
+      margin-bottom: 6px;
+    }
+    .page-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .stat-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .weeks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .week-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .week-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+    .week-card.has-content { border-left: 3px solid var(--success); }
+    .week-card-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .week-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .week-card-progress {
+      display: flex;
+      gap: 4px;
+    }
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #E9ECEF;
+    }
+    .progress-dot.done { background: var(--success); }
+    .week-card-status {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+    .week-card-status.written { color: var(--success); font-weight: 600; }
+
+    /* WEEK VIEW */
+    #weekView { display: none; }
+    .week-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .week-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .week-nav-btn:hover { background: var(--primary-light); border-color: var(--accent); color: var(--primary); }
+    .week-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .week-title-area { text-align: center; }
+    .current-week-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .current-week-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1E2D6E;
+    }
+
+    .save-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .save-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .save-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #CED4DA;
+      transition: background 0.3s;
+    }
+    .save-dot.saved { background: var(--success); }
+    .save-dot.saving { background: var(--warning); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .save-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    .btn-outline {
+      background: #fff;
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(59,91,219,0.3);
+    }
+    .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(59,91,219,0.4); }
+
+    .sections-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .section-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .section-card:focus-within { box-shadow: 0 0 0 3px rgba(59,91,219,0.12), var(--shadow); border-color: var(--accent); }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .section-num.s1 { background: linear-gradient(135deg,#3B5BDB,#5C7CFA); }
+    .section-num.s2 { background: linear-gradient(135deg,#0CA678,#37B24D); }
+    .section-num.s3 { background: linear-gradient(135deg,#E67700,#F59F00); }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .section-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+    .char-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .section-body {
+      padding: 0;
+    }
+    .section-textarea {
+      width: 100%;
+      min-height: 160px;
+      border: none;
+      resize: vertical;
+      padding: 18px 20px;
+      font-size: 14px;
+      font-family: inherit;
+      line-height: 1.75;
+      color: var(--text);
+      background: #fff;
+      transition: background 0.15s;
+    }
+    .section-textarea:focus { outline: none; background: #FDFEFF; }
+    .section-textarea::placeholder { color: #CED4DA; }
+
+    /* MODALS */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      backdrop-filter: blur(2px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1E2D6E;
+      margin-bottom: 8px;
+    }
+    .modal-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    #qrcode { display: inline-block; margin-bottom: 16px; }
+    .qr-url {
+      font-size: 11px;
+      color: var(--text-secondary);
+      word-break: break-all;
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-family: monospace;
+    }
+    .modal-close {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      .header, .sidebar, .week-nav, .save-bar, .modal-overlay { display: none !important; }
+      .main-content { margin-left: 0 !important; padding: 20px !important; }
+      .section-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+      .section-textarea { min-height: unset; height: auto; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; padding: 20px 16px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1E2D6E;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      z-index: 300;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* LOGOUT */
+    .logout-btn {
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .logout-btn:hover { border-color: #FA5252; color: #FA5252; background: #FFF5F5; }
+
+    /* Progress bar */
+    .week-progress-bar {
+      height: 4px;
+      background: #E9ECEF;
+      border-radius: 2px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .week-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #37B24D, #20C997);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====== LOGIN SCREEN ====== -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">📚</div>
+    <div class="login-title">자기성찰지</div>
+    <div class="login-subtitle">생활지도와 상담 | 2주차 ~ 14주차</div>
+
+    <label class="login-label">학번 / 이름 선택</label>
+    <select class="login-select" id="studentSelect">
+      <option value="">-- 본인을 선택하세요 --</option>
+    </select>
+
+    <label class="login-label">이름 확인 또는 입력</label>
+    <input type="text" class="login-input" id="studentNameInput"
+           placeholder="이름을 입력하거나 위에서 선택하세요" maxlength="20" />
+
+    <button class="login-btn" onclick="handleLogin()">입장하기 →</button>
+
+    <div class="login-info">
+      ⚠ 입력하신 내용은 이 기기에 안전하게 저장됩니다.<br>
+      항상 같은 기기에서 접속해 주세요.
+    </div>
+  </div>
+</div>
+
+<!-- ====== MAIN APP ====== -->
+<div id="mainApp">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">📚</div>
+      <div>
+        <div class="header-title">자기성찰지</div>
+        <div class="header-subtitle">생활지도와 상담</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="student-badge">
+        <div class="student-avatar" id="avatarText">?</div>
+        <span id="headerStudentName">학생</span>
+      </div>
+      <button class="icon-btn" title="QR코드" onclick="openQR()">🔲</button>
+      <button class="icon-btn" title="내보내기" onclick="exportData()">💾</button>
+      <button class="icon-btn" title="인쇄" onclick="window.print()">🖨️</button>
+      <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-section-title">주차 선택</div>
+      <button class="week-btn" onclick="showDashboard()" id="sidebarDashboard">
+        🏠 전체 현황
+      </button>
+      <div id="sidebarWeeks"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div id="dashboard">
+        <div class="page-header">
+          <div class="page-title">📋 전체 현황</div>
+          <div class="page-desc">2주차부터 14주차까지의 자기성찰지 작성 현황입니다.</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">전체 주차</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="statDone">0</div>
+            <div class="stat-label">작성 완료</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value" id="statPercent">0%</div>
+            <div class="stat-label">완료율</div>
+          </div>
+        </div>
+
+        <div class="page-title" style="font-size:18px;margin-bottom:16px;">주차별 현황</div>
+        <div class="weeks-grid" id="weeksGrid"></div>
+      </div>
+
+      <!-- WEEK VIEW -->
+      <div id="weekView">
+        <div class="week-nav">
+          <button class="week-nav-btn" id="prevWeekBtn" onclick="changeWeek(-1)">← 이전 주차</button>
+          <div class="week-title-area">
+            <div class="current-week-label">현재 주차</div>
+            <div class="current-week-title" id="currentWeekTitle">2주차</div>
+          </div>
+          <button class="week-nav-btn" id="nextWeekBtn" onclick="changeWeek(1)">다음 주차 →</button>
+        </div>
+
+        <div class="save-bar">
+          <div class="save-status">
+            <div class="save-dot" id="saveDot"></div>
+            <span id="saveStatusText">변경사항 없음</span>
+          </div>
+          <div class="save-actions">
+            <button class="btn btn-outline" onclick="showDashboard()">← 목록으로</button>
+            <button class="btn btn-primary" onclick="saveCurrentWeek()">💾 저장</button>
+          </div>
+        </div>
+
+        <div class="sections-container">
+          <!-- Section 1 -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-num s1">1</div>
+              <div>
+                <div class="section-title">상담이론</div>
+                <div class="section-hint">이번 주에 배운 상담이론의 핵심 개념을 정리해 보세요.</div>
+              </div>
+              <div class="char-count" id="charCount1">0자</div>
+            </div>
+            <div class="section-body">
+              <textarea class="section-textarea" id="section1"
+                placeholder="• 이번 주에 배운 상담이론은 무엇인가요?&#10;• 이론의 핵심 개념과 주요 원리를 정리해 보세요.&#10;• 이론을 배우며 새롭게 이해하거나 인상 깊었던 점은 무엇인가요?"
+                oninput="onTextChange(1)"></textarea>
+            </div>
+          </div>
+
+          <!-- Section 2 -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-num s2">2</div>
+              <div>
+                <div class="section-title">생활지도와 상담 방법</div>
+                <div class="section-hint">배운 생활지도 및 상담 방법을 실제에 어떻게 적용할지 생각해 보세요.</div>
+              </div>
+              <div class="char-count" id="charCount2">0자</div>
+            </div>
+            <div class="section-body">
+              <textarea class="section-textarea" id="section2"
+                placeholder="• 이번 주에 소개된 생활지도와 상담 방법은 무엇인가요?&#10;• 각 방법의 특징과 장단점은 무엇인가요?&#10;• 이 방법을 실제 학교 현장에서 어떻게 활용할 수 있을까요?"
+                oninput="onTextChange(2)"></textarea>
+            </div>
+          </div>
+
+          <!-- Section 3 -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-num s3">3</div>
+              <div>
+                <div class="section-title">생활지도 예시 상황</div>
+                <div class="section-hint">수업의 예시 상황에서 자신이라면 어떻게 대처할지 구체적으로 작성해 보세요.</div>
+              </div>
+              <div class="char-count" id="charCount3">0자</div>
+            </div>
+            <div class="section-body">
+              <textarea class="section-textarea" id="section3"
+                placeholder="• 수업에서 다룬 예시 상황은 어떤 것이었나요?&#10;• 해당 상황에서 학생의 어려움은 무엇이라고 생각하나요?&#10;• 배운 이론과 방법을 적용한다면 어떻게 접근하고 대처하겠나요?"
+                oninput="onTextChange(3)"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal">
+    <div class="modal-title">🔲 QR 코드</div>
+    <div class="modal-desc">아래 QR 코드를 스캔하면 이 페이지에 접속할 수 있습니다.</div>
+    <div id="qrcode"></div>
+    <div class="qr-url" id="qrUrlText"></div>
+    <button class="modal-close" onclick="closeQR()">닫기</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STUDENTS ──────────────────────────────────────────────
+const STUDENTS = [
+  { id: 1,  name: '학생 1' },  { id: 2,  name: '학생 2' },
+  { id: 3,  name: '학생 3' },  { id: 4,  name: '학생 4' },
+  { id: 5,  name: '학생 5' },  { id: 6,  name: '학생 6' },
+  { id: 7,  name: '학생 7' },  { id: 8,  name: '학생 8' },
+  { id: 9,  name: '학생 9' },  { id: 10, name: '학생 10' },
+  { id: 11, name: '학생 11' }, { id: 12, name: '학생 12' },
+  { id: 13, name: '학생 13' }, { id: 14, name: '학생 14' },
+  { id: 15, name: '학생 15' }, { id: 16, name: '학생 16' },
+  { id: 17, name: '학생 17' }, { id: 18, name: '학생 18' },
+  { id: 19, name: '학생 19' }, { id: 20, name: '학생 20' },
+  { id: 21, name: '학생 21' }, { id: 22, name: '학생 22' },
+  { id: 23, name: '학생 23' }, { id: 24, name: '학생 24' },
+  { id: 25, name: '학생 25' },
+];
+const WEEKS = Array.from({ length: 13 }, (_, i) => i + 2); // 2 ~ 14
+
+// ── STATE ─────────────────────────────────────────────────
+let currentStudent = null;
+let currentWeek = 2;
+let saveTimer = null;
+let hasUnsaved = false;
+let qrInstance = null;
+
+// ── INIT ──────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  // Populate student dropdown
+  const sel = document.getElementById('studentSelect');
+  STUDENTS.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = `${s.id}번 — ${getStoredName(s.id) || s.name}`;
+    sel.appendChild(opt);
+  });
+
+  sel.addEventListener('change', () => {
+    const id = parseInt(sel.value);
+    if (id) {
+      const stored = getStoredName(id);
+      document.getElementById('studentNameInput').value = stored || STUDENTS.find(s=>s.id===id).name;
+    }
+  });
+
+  // Auto-login if session saved
+  const session = sessionStorage.getItem('currentStudentId');
+  if (session) {
+    const id = parseInt(session);
+    loginAs(id, getStoredName(id) || STUDENTS.find(s=>s.id===id)?.name || `학생 ${id}`);
+  }
+});
+
+function getStoredName(id) {
+  const data = getData(id);
+  return data?.name || null;
+}
+function getData(id) {
+  try { return JSON.parse(localStorage.getItem(`journal_${id}`)) || {}; }
+  catch { return {}; }
+}
+function saveData(id, data) {
+  localStorage.setItem(`journal_${id}`, JSON.stringify(data));
+}
+
+// ── LOGIN ─────────────────────────────────────────────────
+function handleLogin() {
+  const sel = document.getElementById('studentSelect');
+  const nameInput = document.getElementById('studentNameInput');
+  const id = parseInt(sel.value);
+  const name = nameInput.value.trim();
+
+  if (!id) { showToast('학번을 선택해 주세요.'); return; }
+  if (!name) { showToast('이름을 입력해 주세요.'); return; }
+
+  // Save name
+  const data = getData(id);
+  data.name = name;
+  saveData(id, data);
+
+  loginAs(id, name);
+}
+
+function loginAs(id, name) {
+  currentStudent = { id, name };
+  sessionStorage.setItem('currentStudentId', id);
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+
+  document.getElementById('headerStudentName').textContent = name;
+  document.getElementById('avatarText').textContent = name.charAt(0);
+
+  buildSidebar();
+  showDashboard();
+}
+
+function handleLogout() {
+  sessionStorage.removeItem('currentStudentId');
+  currentStudent = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('studentSelect').value = '';
+  document.getElementById('studentNameInput').value = '';
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────
+function buildSidebar() {
+  const container = document.getElementById('sidebarWeeks');
+  container.innerHTML = '';
+  WEEKS.forEach(w => {
+    const btn = document.createElement('button');
+    btn.className = 'week-btn';
+    btn.id = `sidebar_week_${w}`;
+    btn.onclick = () => showWeek(w);
+
+    const dot = document.createElement('span');
+    dot.className = 'week-dot ' + (weekHasContent(w) ? 'filled' : '');
+    dot.id = `sidebar_dot_${w}`;
+
+    btn.innerHTML = `<span>${w}주차</span>`;
+    btn.appendChild(dot);
+    container.appendChild(btn);
+  });
+}
+
+function updateSidebar() {
+  WEEKS.forEach(w => {
+    const dot = document.getElementById(`sidebar_dot_${w}`);
+    if (dot) {
+      dot.className = 'week-dot ' + (weekHasContent(w) ? 'filled' : '');
+      if (w === currentWeek && document.getElementById('weekView').style.display !== 'none') {
+        dot.classList.add('active');
+      }
+    }
+    const btn = document.getElementById(`sidebar_week_${w}`);
+    if (btn) {
+      btn.classList.toggle('active', w === currentWeek && document.getElementById('weekView').style.display !== 'none');
+    }
+  });
+  const dashBtn = document.getElementById('sidebarDashboard');
+  if (dashBtn) {
+    dashBtn.classList.toggle('active', document.getElementById('dashboard').style.display !== 'none');
+  }
+}
+
+// ── DATA HELPERS ──────────────────────────────────────────
+function getWeekData(week) {
+  const data = getData(currentStudent.id);
+  return data.weeks?.[week] || { s1: '', s2: '', s3: '' };
+}
+
+function weekHasContent(week) {
+  const w = getWeekData(week);
+  return (w.s1 || '').trim().length > 0 ||
+         (w.s2 || '').trim().length > 0 ||
+         (w.s3 || '').trim().length > 0;
+}
+
+function completedSections(week) {
+  const w = getWeekData(week);
+  return [(w.s1||'').trim(), (w.s2||'').trim(), (w.s3||'').trim()].filter(Boolean).length;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function showDashboard() {
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('weekView').style.display = 'none';
+  currentWeek = null;
+  updateSidebar();
+
+  const done = WEEKS.filter(w => weekHasContent(w)).length;
+  const total = WEEKS.length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statPercent').textContent = Math.round(done / total * 100) + '%';
+
+  const grid = document.getElementById('weeksGrid');
+  grid.innerHTML = '';
+  WEEKS.forEach(w => {
+    const comp = completedSections(w);
+    const card = document.createElement('div');
+    card.className = 'week-card ' + (comp > 0 ? 'has-content' : '');
+    card.onclick = () => showWeek(w);
+
+    const dots = [1,2,3].map(i =>
+      `<div class="progress-dot ${i <= comp ? 'done' : ''}"></div>`
+    ).join('');
+
+    const statusText = comp === 0 ? '미작성' : comp === 3 ? '✅ 완료' : `${comp}/3 작성 중`;
+    const statusClass = comp === 3 ? 'written' : '';
+
+    card.innerHTML = `
+      <div class="week-card-num">WEEK ${w}</div>
+      <div class="week-card-title">${w}주차</div>
+      <div class="week-card-progress">${dots}</div>
+      <div class="week-card-status ${statusClass}">${statusText}</div>
+      <div class="week-progress-bar">
+        <div class="week-progress-fill" style="width:${comp/3*100}%"></div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── WEEK VIEW ─────────────────────────────────────────────
+function showWeek(week) {
+  if (hasUnsaved && currentWeek) {
+    saveCurrentWeek(true);
+  }
+  currentWeek = week;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('weekView').style.display = 'block';
+  document.getElementById('currentWeekTitle').textContent = `${week}주차`;
+
+  const wd = getWeekData(week);
+  const t1 = document.getElementById('section1');
+  const t2 = document.getElementById('section2');
+  const t3 = document.getElementById('section3');
+  t1.value = wd.s1 || '';
+  t2.value = wd.s2 || '';
+  t3.value = wd.s3 || '';
+  updateCharCounts();
+  setSaveStatus('saved');
+  hasUnsaved = false;
+
+  document.getElementById('prevWeekBtn').disabled = (week <= 2);
+  document.getElementById('nextWeekBtn').disabled = (week >= 14);
+
+  updateSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function changeWeek(delta) {
+  const next = currentWeek + delta;
+  if (next < 2 || next > 14) return;
+  showWeek(next);
+}
+
+// ── TEXTAREA ──────────────────────────────────────────────
+function onTextChange(num) {
+  updateCharCounts();
+  setSaveStatus('unsaved');
+  hasUnsaved = true;
+
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveCurrentWeek(true), 2000);
+}
+
+function updateCharCounts() {
+  [1,2,3].forEach(i => {
+    const txt = document.getElementById(`section${i}`).value;
+    document.getElementById(`charCount${i}`).textContent = txt.length + '자';
+  });
+}
+
+// ── SAVE ──────────────────────────────────────────────────
+function saveCurrentWeek(silent = false) {
+  if (!currentStudent || !currentWeek) return;
+  setSaveStatus('saving');
+
+  const data = getData(currentStudent.id);
+  if (!data.weeks) data.weeks = {};
+  data.weeks[currentWeek] = {
+    s1: document.getElementById('section1').value,
+    s2: document.getElementById('section2').value,
+    s3: document.getElementById('section3').value,
+    savedAt: new Date().toISOString(),
+  };
+  saveData(currentStudent.id, data);
+
+  setTimeout(() => {
+    setSaveStatus('saved');
+    hasUnsaved = false;
+    updateSidebar();
+    if (!silent) showToast(`${currentWeek}주차가 저장되었습니다.`);
+
+    // Update sidebar dot
+    const dot = document.getElementById(`sidebar_dot_${currentWeek}`);
+    if (dot) dot.className = 'week-dot ' + (weekHasContent(currentWeek) ? 'filled active' : 'active');
+  }, 400);
+}
+
+function setSaveStatus(status) {
+  const dot = document.getElementById('saveDot');
+  const text = document.getElementById('saveStatusText');
+  dot.className = 'save-dot ' + status;
+  if (status === 'saved') text.textContent = '저장됨';
+  else if (status === 'saving') text.textContent = '저장 중...';
+  else text.textContent = '저장되지 않은 변경사항';
+}
+
+// ── EXPORT ────────────────────────────────────────────────
+function exportData() {
+  if (!currentStudent) return;
+  const data = getData(currentStudent.id);
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `자기성찰지_${currentStudent.name}_${new Date().toLocaleDateString('ko-KR').replace(/\. /g,'-').replace('.','')}.json`;
+  a.click();
+  showToast('데이터가 내보내기 되었습니다.');
+}
+
+// ── QR CODE ───────────────────────────────────────────────
+function openQR() {
+  const modal = document.getElementById('qrModal');
+  modal.classList.add('open');
+
+  const url = window.location.href.split('?')[0];
+  document.getElementById('qrUrlText').textContent = url;
+
+  const qrDiv = document.getElementById('qrcode');
+  qrDiv.innerHTML = '';
+  if (qrInstance) { qrInstance.clear(); qrInstance = null; }
+
+  try {
+    qrInstance = new QRCode(qrDiv, {
+      text: url,
+      width: 200,
+      height: 200,
+      colorDark: '#1E2D6E',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  } catch (e) {
+    qrDiv.innerHTML = '<p style="color:#868E96;font-size:13px;">QR 코드 생성에 실패했습니다.<br>URL을 직접 공유해 주세요.</p>';
+  }
+}
+
+function closeQR() {
+  document.getElementById('qrModal').classList.remove('open');
+}
+
+document.getElementById('qrModal').addEventListener('click', function(e) {
+  if (e.target === this) closeQR();
+});
+
+// ── TOAST ─────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+    e.preventDefault();
+    if (currentWeek) saveCurrentWeek();
+  }
+});
+</script>
+</body>
+</html>
